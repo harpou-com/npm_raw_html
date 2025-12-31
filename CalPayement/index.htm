@@ -113,127 +113,132 @@
                 </div>
 
                 <!-- Col 4: Paramètres spécifiques -->
-                <div class="lg:col-span-2 relative bg-slate-700/30 rounded p-2 border border-slate-600/50">
+                <div
+                    class="lg:col-span-2 relative bg-slate-700/30 rounded p-2 border border-slate-600/50 flex flex-col justify-between">
 
-                    <!-- Config pour Dégressif / LOC -->
-                    <div id="configDegressive" class="transition-opacity duration-200">
-                        <div class="flex justify-between items-baseline mb-2">
-                            <p class="text-[10px] text-blue-200 font-bold uppercase" id="configLabel">Options</p>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="inputPayoff"
-                                    class="w-3 h-3 text-blue-500 rounded focus:ring-0 cursor-pointer">
-                                <label for="inputPayoff"
-                                    class="ml-1.5 text-[10px] text-white opacity-80 cursor-pointer select-none">Solder à
-                                    la fin?</label>
-                            </div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <p class="text-[10px] text-blue-200 font-bold uppercase" id="configLabel">Options</p>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="inputPayoff"
+                                class="w-3 h-3 text-blue-500 rounded focus:ring-0 cursor-pointer">
+                            <label for="inputPayoff"
+                                class="ml-1.5 text-[10px] text-white opacity-80 cursor-pointer select-none">Solder à
+                                la fin?</label>
                         </div>
+                    </div>
 
-                        <div class="grid grid-cols-2 gap-2">
+                    <!-- Shared Inputs (Always Visible) -->
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div id="wrapperFloor" class="col-span-2">
+                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1"
+                                id="labelFloor">Paiement de Base / Plancher ($)</label>
+                            <input type="number" id="inputFloor" value="0" step="5"
+                                class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                        </div>
+                    </div>
+
+                    <!-- Mode Specific Blocks -->
+                    <div class="relative">
+                        <!-- Degressive / LOC Specific -->
+                        <div id="configDegressive" class="transition-opacity duration-200">
                             <div id="wrapperMinPercent">
                                 <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">%
                                     par période</label>
                                 <input type="number" id="inputMinPercent" value="0" step="0.5"
                                     class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                             </div>
-                            <div id="wrapperFloor" class="col-span-1">
-                                <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1"
-                                    id="labelFloor">Paiement de Base / Plancher ($)</label>
-                                <input type="number" id="inputFloor" value="0" step="5"
-                                    class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
-                            </div>
                         </div>
 
-                        <!-- Global Extra -->
-                        <div class="mt-2" id="wrapperGlobalExtra">
-                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Extra
-                                Global ($)</label>
-                            <div class="relative">
-                                <span
-                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+</span>
-                                <input type="number" id="inputGlobalExtra" value="0" step="10"
-                                    class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 pl-8 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                        <!-- Equal Specific Info (Calculated PMT) -->
+                        <div id="configEqual" class="hidden items-center justify-center p-2 bg-slate-800 rounded mt-1">
+                            <div class="w-full text-center">
+                                <label
+                                    class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement
+                                    Calculé</label>
+                                <div class="text-xl text-blue-300 font-mono font-bold" id="displayFixedPMT">--</div>
+                                <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Config pour Égal (Overlay) -->
-                <div id="configEqual"
-                    class="absolute inset-0 hidden items-center justify-center p-2 bg-slate-800 rounded">
-                    <div class="w-full text-center">
-                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement
-                            Calculé</label>
-                        <div class="text-xl text-blue-300 font-mono font-bold" id="displayFixedPMT">
-                            --
+                    <!-- Global Extra (Always Visible) -->
+                    <div class="mt-2" id="wrapperGlobalExtra">
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Extra Global
+                            ($)</label>
+                        <div class="relative">
+                            <span
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+</span>
+                            <input type="number" id="inputGlobalExtra" value="0" step="10"
+                                class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 pl-8 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
                     </div>
+
+                </div>
+
+                <!-- Col 5: Reset -->
+                <div class="lg:col-span-1 flex items-end">
+                    <button onclick="resetData()"
+                        class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
+                        Réinitialiser
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Col 5: Reset -->
-            <div class="lg:col-span-1 flex items-end">
-                <button onclick="resetData()"
-                    class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
-                    Réinitialiser
-                </button>
+        <!-- Summary KPI -->
+        <div
+            class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
+            <div class="p-4 text-center">
+                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Nb. Paiements</p>
+                <p class="text-xl font-bold text-gray-800 mt-1" id="kpiCount">--</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Intérêts Payés</p>
+                <p class="text-xl font-bold text-orange-600 mt-1" id="kpiInterest">--</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Déboursé</p>
+                <p class="text-xl font-bold text-blue-800 mt-1" id="kpiTotalPaid">--</p>
+            </div>
+            <div class="p-4 text-center bg-white">
+                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Solde Final</p>
+                <p class="text-2xl font-bold text-gray-800 mt-1" id="kpiFinalBalance">--</p>
             </div>
         </div>
-    </div>
 
-    <!-- Summary KPI -->
-    <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
-        <div class="p-4 text-center">
-            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Nb. Paiements</p>
-            <p class="text-xl font-bold text-gray-800 mt-1" id="kpiCount">--</p>
+        <!-- Main Table -->
+        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+            <table class="w-full text-sm text-left relative">
+                <thead
+                    class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+                    <tr>
+                        <th class="px-4 py-3 w-12">#</th>
+                        <th class="px-4 py-3 w-32">Date</th>
+                        <th class="px-4 py-3 text-right">Solde Début</th>
+                        <th class="px-4 py-3 text-right text-orange-600 w-24">Intérêts</th>
+                        <th class="px-4 py-3 text-right bg-gray-50">
+                            <span id="headerMinReq">Min. Req.</span>
+                        </th>
+                        <th class="px-4 py-3 text-right bg-blue-50/50 text-blue-900 border-l border-r border-blue-100">
+                            Ajust.
+                        </th>
+                        <th class="px-4 py-3 text-right w-32 font-bold">
+                            Total Payé
+                        </th>
+                        <th class="px-4 py-3 text-right">Solde Fin</th>
+                        <th class="px-4 py-3 w-10"></th>
+                    </tr>
+                </thead>
+                <tbody id="paymentBody" class="divide-y divide-gray-100">
+                    <!-- Rows generated by JS -->
+                </tbody>
+            </table>
         </div>
-        <div class="p-4 text-center">
-            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Intérêts Payés</p>
-            <p class="text-xl font-bold text-orange-600 mt-1" id="kpiInterest">--</p>
-        </div>
-        <div class="p-4 text-center">
-            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Déboursé</p>
-            <p class="text-xl font-bold text-blue-800 mt-1" id="kpiTotalPaid">--</p>
-        </div>
-        <div class="p-4 text-center bg-white">
-            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Solde Final</p>
-            <p class="text-2xl font-bold text-gray-800 mt-1" id="kpiFinalBalance">--</p>
-        </div>
-    </div>
 
-    <!-- Main Table -->
-    <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
-        <table class="w-full text-sm text-left relative">
-            <thead
-                class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-                <tr>
-                    <th class="px-4 py-3 w-12">#</th>
-                    <th class="px-4 py-3 w-32">Date</th>
-                    <th class="px-4 py-3 text-right">Solde Début</th>
-                    <th class="px-4 py-3 text-right text-orange-600 w-24">Intérêts</th>
-                    <th class="px-4 py-3 text-right bg-gray-50">
-                        <span id="headerMinReq">Min. Req.</span>
-                    </th>
-                    <th class="px-4 py-3 text-right bg-blue-50/50 text-blue-900 border-l border-r border-blue-100">
-                        Ajust.
-                    </th>
-                    <th class="px-4 py-3 text-right w-32 font-bold">
-                        Total Payé
-                    </th>
-                    <th class="px-4 py-3 text-right">Solde Fin</th>
-                    <th class="px-4 py-3 w-10"></th>
-                </tr>
-            </thead>
-            <tbody id="paymentBody" class="divide-y divide-gray-100">
-                <!-- Rows generated by JS -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="p-4 bg-gray-50 border-t text-xs text-gray-500 flex justify-between items-center">
-        <span>* Intérêts calculés par période sur le solde restant.</span>
-        <span id="footerNote">--</span>
-    </div>
+        <div class="p-4 bg-gray-50 border-t text-xs text-gray-500 flex justify-between items-center">
+            <span>* Intérêts calculés par période sur le solde restant.</span>
+            <span id="footerNote">--</span>
+        </div>
 
     </div>
 
@@ -441,12 +446,11 @@
             const equalEl = document.getElementById('configEqual');
             const headerMin = document.getElementById('headerMinReq');
             const freqLabel = document.getElementById('freqLabel');
+            const configLabel = document.getElementById('configLabel');
 
             // LOC specific
             const wrapperMinPercent = document.getElementById('wrapperMinPercent');
-            const wrapperFloor = document.getElementById('wrapperFloor');
             const labelFloor = document.getElementById('labelFloor');
-            const configLabel = document.getElementById('configLabel');
 
             let suffix = "";
             if (config.frequency == 12) suffix = "par mois";
@@ -454,32 +458,33 @@
             else if (config.frequency == 52) suffix = "par semaine";
             freqLabel.textContent = suffix;
 
+            // Reset Default State logic
+            labelFloor.textContent = "Paiement de Base / Plancher ($)";
+
             if (config.type === 'equal') {
-                degressiveEl.classList.add('opacity-0', 'pointer-events-none');
+                // EQUAL MODE
+                degressiveEl.classList.add('hidden'); // Hide MinPercent container
                 equalEl.classList.remove('hidden');
                 equalEl.classList.add('flex');
+
                 headerMin.textContent = "Requis";
+                configLabel.textContent = "Paiements Fixes";
             } else {
-                // Degressive OR LOC
-                equalEl.classList.remove('flex');
+                // DEGRESSIVE or LOC
                 equalEl.classList.add('hidden');
-                degressiveEl.classList.remove('opacity-0', 'pointer-events-none');
+                equalEl.classList.remove('flex');
+                degressiveEl.classList.remove('hidden');
 
                 if (config.type === 'loc') {
-                    // Line of Credit Mode
+                    // LOC MODE
                     headerMin.innerHTML = "Intérêts<br><span class='text-[10px] font-normal opacity-70'>(Min)</span>";
-                    wrapperMinPercent.classList.add('hidden');
-                    wrapperFloor.classList.remove('col-span-1');
-                    wrapperFloor.classList.add('col-span-2');
-                    labelFloor.textContent = "Paiement Visé ($)";
+                    wrapperMinPercent.classList.add('hidden'); // Hide Min %
                     configLabel.textContent = "Marge de Crédit";
+                    labelFloor.textContent = "Paiement Visé ($)";
                 } else {
-                    // Standard Degressive
+                    // DEGRESSIVE MODE
                     headerMin.innerHTML = "Min. %<br><span class='text-[10px] font-normal opacity-70'>(Auto)</span>";
-                    wrapperMinPercent.classList.remove('hidden');
-                    wrapperFloor.classList.add('col-span-1');
-                    wrapperFloor.classList.remove('col-span-2');
-                    labelFloor.textContent = "Plancher ($)";
+                    wrapperMinPercent.classList.remove('hidden'); // Show Min %
                     configLabel.textContent = "Options Dégressives";
                 }
             }
@@ -504,6 +509,7 @@
 
         // --- Core Calculation Logic ---
         function calculatePMT(yearlyRate, periodsTotal, principal) {
+            if (periodsTotal <= 0) return 0;
             if (yearlyRate === 0) return principal / periodsTotal;
             const r = (yearlyRate / 100) / config.frequency;
             return principal * (r * Math.pow(1 + r, periodsTotal)) / (Math.pow(1 + r, periodsTotal) - 1);
