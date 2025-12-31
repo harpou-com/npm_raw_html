@@ -955,8 +955,45 @@
                 theme: 'striped',
                 headStyles: { fillColor: [15, 23, 42] }, // Dark header
                 styles: { fontSize: 8, halign: 'right' },
-                columnStyles: { 0: { halign: 'center' }, 1: { halign: 'left' } },
-                alternateRowStyles: { fillColor: [248, 250, 252] }
+                columnStyles: {
+                    0: { halign: 'center', textColor: [156, 163, 175] }, // Index (Gray-400)
+                    1: { halign: 'left', textColor: [55, 65, 81] },      // Date (Gray-700)
+                    2: { textColor: [107, 114, 128] },                   // StartBalance (Gray-500)
+                    3: { textColor: [234, 88, 12] },                     // Interest (Orange-600)
+                    4: { textColor: [156, 163, 175] },                   // MinReq (Gray-400)
+                    5: { textColor: [37, 99, 235], fontStyle: 'bold' },  // Adjustment (Blue-600)
+                    6: { fontStyle: 'bold', textColor: [30, 41, 59] },   // Payment (Slate-800)
+                    7: { fontStyle: 'bold', textColor: [51, 65, 85] }    // EndBalance (Slate-700)
+                },
+                alternateRowStyles: { fillColor: [248, 250, 252] },
+                didParseCell: function (data) {
+                    if (data.section === 'body' && data.column.index === 6) {
+                        // Custom logic for Payment column color based on row data
+                        // We use the index to find the original row data
+                        const rowIndex = data.row.index;
+                        const rowData = schedule[rowIndex];
+
+                        if (rowData.isFinalPeriod) {
+                            if (config.payoffAtEnd) {
+                                // Ballon (Red) or Fin (Green)
+                                let refPayment = (config.type === 'equal') ? rowData.minReq : Math.max(rowData.minReq, rowData.activeFloor);
+                                if (rowData.payment > (refPayment * 1.5) && rowData.payment > 10) {
+                                    data.cell.styles.textColor = [185, 28, 28]; // Red-700
+                                } else {
+                                    data.cell.styles.textColor = [21, 128, 61]; // Green-700
+                                }
+                            } else {
+                                // Simulation
+                                if (rowData.endBalance > 0) data.cell.styles.textColor = [194, 65, 12]; // Orange-700
+                                else data.cell.styles.textColor = [21, 128, 61]; // Green-700
+                            }
+                        } else if (rowData.isCustom) {
+                            data.cell.styles.textColor = [161, 98, 7]; // Yellow-700
+                        } else if (rowData.isFuturePlan) {
+                            data.cell.styles.textColor = [29, 78, 216]; // Blue-700
+                        }
+                    }
+                }
             });
 
             doc.save("plan_financier.pdf");

@@ -1,23 +1,23 @@
 # Plan Financier
 
-## Configuration
-- **Montant Initial**: 30 000,00 $
-- **Date Début**: 2026-01-07
-- **Fréquence**: Hebdomadaire
-- **Intérêt**: 7.5%
-- **Durée**: 60 mois
-- **Type**: loc
-- **Paiement de Base / Plancher**: 0,00 $
-- **Extra Global**: 115,00 $
-- **Solder à la fin**: Non
+### Configuration
+| Paramètre | Valeur | Paramètre | Valeur |
+| :--- | :--- | :--- | :--- |
+| **Montant Initial** | 30 000,00 $ | **Taux** | 7.5% |
+| **Date Début** | 2026-01-07 | **Durée** | 60 mois |
+| **Fréquence** | Hebdomadaire | **Type** | loc |
+| **Base / Plancher** | 0,00 $ | **Extra Global** | 115,00 $ |
+| **Solder à la fin** | Non | | |
 
-## Résumé
-- **Nombre de Paiements**: 260
-- **Total Intérêts**: 5 665,31 $
-- **Total Payé**: 35 565,31 $
-- **Solde Final**: 100,00 $
+### Résumé
+| KPI | Valeur | KPI | Valeur |
+| :--- | :--- | :--- | :--- |
+| **Total Payé** | 35 565,31 $ | **Total Intérêts** | 5 665,31 $ |
+| **Nb. Paiements** | 260 | **Solde Final** | 100,00 $ |
 
-## Détails
+> ⚠️ **Attention**: Il reste un solde final de 100,00 $
+
+### Détails de l'échéancier
 | # | Date | Solde Début | Intérêts | Min Requis | Ajust. | Total Payé | Solde Fin |
 |---:|:---|---:|---:|---:|---:|---:|---:|
 | 1 | 7 janv. 26 | 30 000,00 $ | 43,27 $ | 43,27 $ | 115,00 $ | **158,27 $** | 29 885,00 $ |
