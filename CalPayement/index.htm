@@ -239,11 +239,31 @@
                     <p class="font-bold text-gray-800 text-lg" id="modalMonthName">--</p>
                 </div>
 
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Type d'ajustement</label>
+                    <div class="flex bg-gray-100 p-1 rounded-lg">
+                        <button onclick="setModalMode('total')" id="btnModeTotal"
+                            class="flex-1 py-1.5 text-sm font-semibold rounded-md shadow-sm bg-white text-gray-800 transition">Total
+                            Fixe</button>
+                        <button onclick="setModalMode('extra')" id="btnModeExtra"
+                            class="flex-1 py-1.5 text-sm font-semibold rounded-md text-gray-500 hover:text-gray-700 transition">Extra
+                            (+)</button>
+                    </div>
+                </div>
+
                 <div class="mb-6">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Nouveau paiement total ($)</label>
-                    <input type="number" id="modalAmount"
-                        class="w-full border-2 border-slate-200 rounded-lg px-4 py-3 text-2xl font-mono text-center focus:border-blue-500 focus:outline-none"
-                        placeholder="0.00">
+                    <label class="block text-sm font-bold text-gray-700 mb-2" id="lblModalAmount">Montant ($)</label>
+                    <div class="relative">
+                        <span id="prefixPlus"
+                            class="hidden absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">+</span>
+                        <input type="number" id="modalAmount"
+                            class="w-full border-2 border-slate-200 rounded-lg px-4 py-3 text-2xl font-mono text-center focus:border-blue-500 focus:outline-none transition-all"
+                            placeholder="0.00">
+                    </div>
+
+                    <div id="modalPreview" class="mt-2 text-center text-sm text-gray-500 font-mono">
+                        <!-- Preview text injected by JS -->
+                    </div>
 
                     <div id="modalWarning"
                         class="hidden mt-2 bg-red-50 text-red-700 text-xs p-2 rounded border border-red-100 flex items-center gap-2">
@@ -288,6 +308,7 @@
 
         let overrides = {};
         let currentEditingIndex = -1;
+        let currentEditingMode = 'total'; // 'total' or 'extra'
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -452,6 +473,7 @@
             let data = [];
             let currentBalance = config.initial;
             let activeFloor = config.floor;
+            let activeExtra = 0;
             let totalPaid = 0;
             let totalInterest = 0;
             let totalPrincipal = 0;
@@ -536,7 +558,9 @@
                     isCustom: isCustom,
                     isFuturePlan: isFuturePlan,
                     isFinalPeriod: isFinalPeriod,
-                    activeFloor: activeFloor
+                    activeFloor: activeFloor,
+                    activeExtra: activeExtra,
+                    isExtra: (activeExtra > 0 || (isCustom && overrides[i].mode === 'extra'))
                 });
 
                 totalPaid += payment;
@@ -602,11 +626,19 @@
                 } else if (row.isCustom) {
                     tr.className += " bg-yellow-50/50";
                     totalClass = "font-mono font-bold text-yellow-700";
-                    badge = `<span class="ml-2 text-[10px] uppercase bg-yellow-200 text-yellow-800 px-1.5 py-0.5 rounded">Manuel</span>`;
+                    if (row.isExtra) {
+                        badge = `<span class="ml-2 text-[10px] uppercase bg-yellow-200 text-yellow-800 px-1.5 py-0.5 rounded">Extra</span>`;
+                    } else {
+                        badge = `<span class="ml-2 text-[10px] uppercase bg-yellow-200 text-yellow-800 px-1.5 py-0.5 rounded">Manuel</span>`;
+                    }
                 } else if (row.isFuturePlan) {
                     tr.className += " bg-blue-50/50";
                     totalClass = "font-mono font-bold text-blue-700";
-                    badge = `<span class="ml-2 text-[10px] uppercase bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">Plan</span>`;
+                    if (row.isExtra) {
+                        badge = `<span class="ml-2 text-[10px] uppercase bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded">+${fmt(row.activeExtra)}</span>`;
+                    } else {
+                        badge = `<span class="ml-2 text-[10px] uppercase bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">Plan</span>`;
+                    }
                 }
 
                 if (row.adjustment > 0.01) {
@@ -746,15 +778,57 @@
         const modal = document.getElementById('editModal');
         const modalAmount = document.getElementById('modalAmount');
         const modalWarning = document.getElementById('modalWarning');
+        const modalPreview = document.getElementById('modalPreview');
+        const btnModeTotal = document.getElementById('btnModeTotal');
+        const btnModeExtra = document.getElementById('btnModeExtra');
+
         let currentMinReqForEdit = 0;
+
+        function setModalMode(mode) {
+            currentEditingMode = mode;
+            // Update UI buttons
+            if (mode === 'total') {
+                btnModeTotal.classList.remove('bg-gray-100', 'text-gray-500');
+                btnModeTotal.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
+                btnModeExtra.classList.add('bg-gray-100', 'text-gray-500');
+                btnModeExtra.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
+
+                document.getElementById('lblModalAmount').textContent = "Nouveau paiement total ($)";
+                document.getElementById('prefixPlus').classList.add('hidden');
+                modalAmount.classList.remove('pl-8');
+            } else {
+                btnModeExtra.classList.remove('bg-gray-100', 'text-gray-500');
+                btnModeExtra.classList.add('bg-white', 'text-purple-800', 'shadow-sm');
+                btnModeTotal.classList.add('bg-gray-100', 'text-gray-500');
+                btnModeTotal.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
+
+                document.getElementById('lblModalAmount').textContent = "Montant Extra ($)";
+                document.getElementById('prefixPlus').classList.remove('hidden');
+                modalAmount.classList.add('pl-8');
+            }
+            updateModalPreview();
+        }
 
         function openEdit(index, monthName, minReq, currentVal) {
             currentEditingIndex = index;
             currentMinReqForEdit = minReq;
+
+            // Check if there is an existing override to restore mode
+            let existing = overrides[index];
+            if (existing) {
+                currentEditingMode = existing.mode || 'total';
+                modalAmount.value = existing.amount.toFixed(2);
+            } else {
+                currentEditingMode = 'total';
+                modalAmount.value = currentVal.toFixed(2);
+            }
+
+            setModalMode(currentEditingMode);
+
             document.getElementById('modalMonthName').textContent = monthName;
             document.getElementById('modalMinRef').textContent = fmt(minReq);
-            modalAmount.value = currentVal.toFixed(2);
             updateModalPreview();
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             modalAmount.focus();
@@ -763,8 +837,17 @@
 
         function updateModalPreview() {
             const val = parseFloat(modalAmount.value) || 0;
-            if (val < currentMinReqForEdit) modalWarning.classList.remove('hidden');
-            else modalWarning.classList.add('hidden');
+
+            if (currentEditingMode === 'total') {
+                modalPreview.textContent = "";
+                if (val < currentMinReqForEdit) modalWarning.classList.remove('hidden');
+                else modalWarning.classList.add('hidden');
+            } else {
+                // Extra mode
+                modalWarning.classList.add('hidden'); // Always valid to add 0 or more
+                let total = currentMinReqForEdit + val;
+                modalPreview.innerHTML = `Min (${fmt(currentMinReqForEdit)}) + Extra (${fmt(val)}) = <span class="font-bold text-purple-700">${fmt(total)}</span>`;
+            }
         }
 
         function closeModal() {
@@ -775,7 +858,13 @@
         function applyEdit(type) {
             const val = parseFloat(modalAmount.value);
             if (isNaN(val) || val < 0) return;
-            overrides[currentEditingIndex] = { type: type, amount: val };
+
+            overrides[currentEditingIndex] = {
+                type: type,
+                amount: val,
+                mode: currentEditingMode
+            };
+
             closeModal();
             saveState();
             calculate();
