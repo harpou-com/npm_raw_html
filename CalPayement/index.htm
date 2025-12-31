@@ -120,7 +120,7 @@
                         <div class="flex justify-between items-baseline mb-2">
                             <p class="text-[10px] text-blue-200 font-bold uppercase" id="configLabel">Options</p>
                             <div class="flex items-center">
-                                <input type="checkbox" id="inputPayoff" checked
+                                <input type="checkbox" id="inputPayoff"
                                     class="w-3 h-3 text-blue-500 rounded focus:ring-0 cursor-pointer">
                                 <label for="inputPayoff"
                                     class="ml-1.5 text-[10px] text-white opacity-80 cursor-pointer select-none">Solder à
@@ -283,7 +283,7 @@
             minPercent: 0,
             floor: 0,
             startDate: new Date().toISOString().split('T')[0],
-            payoffAtEnd: true
+            payoffAtEnd: false
         };
 
         let overrides = {};
@@ -434,7 +434,7 @@
             config.frequency = 12;
             config.type = 'degressive';
             config.startDate = new Date().toISOString().split('T')[0];
-            config.payoffAtEnd = true;
+            config.payoffAtEnd = false;
             syncInputsToConfig();
             updateUIForType();
             saveState();
