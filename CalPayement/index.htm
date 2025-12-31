@@ -385,7 +385,24 @@
         }
 
         document.getElementById('inputFrequency').addEventListener('change', (e) => {
-            config.frequency = parseInt(e.target.value);
+            const newFreq = parseInt(e.target.value);
+            const oldFreq = config.frequency;
+
+            if (oldFreq && newFreq && oldFreq !== newFreq) {
+                const ratio = oldFreq / newFreq;
+
+                // Adjust Amounts
+                if (config.floor > 0) config.floor = config.floor * ratio;
+                if (config.globalExtra > 0) config.globalExtra = config.globalExtra * ratio;
+            }
+
+            config.frequency = newFreq;
+
+            // Sync updated values back to Inputs
+            document.getElementById('inputFloor').value = config.floor;
+            if (document.getElementById('inputGlobalExtra'))
+                document.getElementById('inputGlobalExtra').value = config.globalExtra;
+
             updateUIForType();
             saveState();
             calculate();
