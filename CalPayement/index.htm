@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +9,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    
+
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .modal { transition: opacity 0.2s ease-in-out; }
-        .modal.hidden { opacity: 0; pointer-events: none; }
-        .modal.flex { opacity: 1; pointer-events: auto; }
-        input, select { transition: all 0.2s; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal {
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal.flex {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        input,
+        select {
+            transition: all 0.2s;
+        }
     </style>
 </head>
+
 <body class="bg-gray-100 p-4 md:p-8 text-gray-800">
 
     <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-        
+
         <!-- Header & Controls -->
         <div class="bg-slate-800 p-6 text-white">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -28,55 +47,65 @@
                     <h1 class="text-2xl font-bold mb-1">Calculatrice Financière</h1>
                     <p class="opacity-70 text-sm">Prêts, Marges de crédit et Amortissement</p>
                 </div>
-                
+
                 <div class="flex gap-2 mt-4 md:mt-0">
-                    <button onclick="exportToPDF()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">PDF</button>
-                    <button onclick="exportToCSV()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">Excel</button>
-                    <button onclick="exportToMD()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">MD</button>
+                    <button onclick="exportToPDF()"
+                        class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">PDF</button>
+                    <button onclick="exportToCSV()"
+                        class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">Excel</button>
+                    <button onclick="exportToMD()"
+                        class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded border border-slate-500 transition">MD</button>
                 </div>
             </div>
-            
+
             <!-- Main Config Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 border-t border-slate-600 pt-6">
-                
+
                 <!-- Col 1: Montant & Taux -->
                 <div class="lg:col-span-1">
-                     <div class="mb-3">
-                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Montant ($)</label>
-                        <input type="number" id="inputInitial" value="4758.15" step="0.01" 
-                               class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                    <div class="mb-3">
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Montant
+                            ($)</label>
+                        <input type="number" id="inputInitial" value="0.00" step="0.01"
+                            class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                     </div>
                     <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Intérêt (%)</label>
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Intérêt
+                            (%)</label>
                         <input type="number" id="inputRate" value="0" step="0.1" min="0"
-                               class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                            class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                     </div>
                 </div>
 
                 <!-- Col 2: Date & Durée -->
                 <div class="lg:col-span-1">
                     <div class="mb-3">
-                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Date Début</label>
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Date
+                            Début</label>
                         <input type="date" id="inputDate"
-                               class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400">
+                            class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400">
                     </div>
                     <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Durée (Mois)</label>
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Durée
+                            (Mois)</label>
                         <input type="number" id="inputTerm" value="24" step="1" min="1"
-                               class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                            class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                     </div>
                 </div>
 
                 <!-- Col 3: Fréquence -->
                 <div class="lg:col-span-1">
-                    <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Fréquence</label>
-                    <select id="inputFrequency" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400 h-[38px] mb-3">
+                    <label
+                        class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Fréquence</label>
+                    <select id="inputFrequency"
+                        class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400 h-[38px] mb-3">
                         <option value="12">Mensuel</option>
                         <option value="26">Aux 2 semaines</option>
                         <option value="52">Hebdomadaire</option>
                     </select>
-                     <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Type</label>
-                    <select id="inputType" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400 h-[38px]">
+                    <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Type</label>
+                    <select id="inputType"
+                        class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-400 h-[38px]">
                         <option value="degressive">Min. % (Dégressif)</option>
                         <option value="loc">Marge de crédit</option>
                         <option value="equal">Paiements Fixes</option>
@@ -85,46 +114,54 @@
 
                 <!-- Col 4: Paramètres spécifiques -->
                 <div class="lg:col-span-2 relative bg-slate-700/30 rounded p-2 border border-slate-600/50">
-                    
+
                     <!-- Config pour Dégressif / LOC -->
                     <div id="configDegressive" class="transition-opacity duration-200">
                         <div class="flex justify-between items-baseline mb-2">
-                             <p class="text-[10px] text-blue-200 font-bold uppercase" id="configLabel">Options</p>
-                             <div class="flex items-center">
-                                <input type="checkbox" id="inputPayoff" checked class="w-3 h-3 text-blue-500 rounded focus:ring-0 cursor-pointer">
-                                <label for="inputPayoff" class="ml-1.5 text-[10px] text-white opacity-80 cursor-pointer select-none">Solder à la fin?</label>
+                            <p class="text-[10px] text-blue-200 font-bold uppercase" id="configLabel">Options</p>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="inputPayoff" checked
+                                    class="w-3 h-3 text-blue-500 rounded focus:ring-0 cursor-pointer">
+                                <label for="inputPayoff"
+                                    class="ml-1.5 text-[10px] text-white opacity-80 cursor-pointer select-none">Solder à
+                                    la fin?</label>
                             </div>
                         </div>
-                        
+
                         <div class="grid grid-cols-2 gap-2">
                             <div id="wrapperMinPercent">
-                                <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">% par période</label>
-                                <input type="number" id="inputMinPercent" value="5" step="0.5" 
-                                       class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                                <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">%
+                                    par période</label>
+                                <input type="number" id="inputMinPercent" value="5" step="0.5"
+                                    class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                             </div>
                             <div id="wrapperFloor" class="col-span-1">
-                                <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1" id="labelFloor">Plancher ($)</label>
-                                <input type="number" id="inputFloor" value="150" step="5" 
-                                       class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
+                                <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1"
+                                    id="labelFloor">Plancher ($)</label>
+                                <input type="number" id="inputFloor" value="150" step="5"
+                                    class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Config pour Égal (Overlay) -->
-                    <div id="configEqual" class="absolute inset-0 hidden items-center justify-center p-2 bg-slate-800 rounded">
+                    <div id="configEqual"
+                        class="absolute inset-0 hidden items-center justify-center p-2 bg-slate-800 rounded">
                         <div class="w-full text-center">
-                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement Calculé</label>
+                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement
+                                Calculé</label>
                             <div class="text-xl text-blue-300 font-mono font-bold" id="displayFixedPMT">
                                 --
                             </div>
-                             <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
+                            <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Col 5: Reset -->
                 <div class="lg:col-span-1 flex items-end">
-                    <button onclick="resetData()" class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
+                    <button onclick="resetData()"
+                        class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
                         Réinitialiser
                     </button>
                 </div>
@@ -132,7 +169,8 @@
         </div>
 
         <!-- Summary KPI -->
-        <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
+        <div
+            class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
             <div class="p-4 text-center">
                 <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Nb. Paiements</p>
                 <p class="text-xl font-bold text-gray-800 mt-1" id="kpiCount">--</p>
@@ -154,7 +192,8 @@
         <!-- Main Table -->
         <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
             <table class="w-full text-sm text-left relative">
-                <thead class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+                <thead
+                    class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                         <th class="px-4 py-3 w-12">#</th>
                         <th class="px-4 py-3 w-32">Date</th>
@@ -178,7 +217,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="p-4 bg-gray-50 border-t text-xs text-gray-500 flex justify-between items-center">
             <span>* Intérêts calculés par période sur le solde restant.</span>
             <span id="footerNote">--</span>
@@ -193,7 +232,7 @@
                 <h3 class="text-white font-bold text-lg">Modifier le paiement</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white">&times;</button>
             </div>
-            
+
             <div class="p-6">
                 <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Période sélectionnée</p>
@@ -202,25 +241,32 @@
 
                 <div class="mb-6">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Nouveau paiement total ($)</label>
-                    <input type="number" id="modalAmount" class="w-full border-2 border-slate-200 rounded-lg px-4 py-3 text-2xl font-mono text-center focus:border-blue-500 focus:outline-none" placeholder="0.00">
-                    
-                    <div id="modalWarning" class="hidden mt-2 bg-red-50 text-red-700 text-xs p-2 rounded border border-red-100 flex items-center gap-2">
+                    <input type="number" id="modalAmount"
+                        class="w-full border-2 border-slate-200 rounded-lg px-4 py-3 text-2xl font-mono text-center focus:border-blue-500 focus:outline-none"
+                        placeholder="0.00">
+
+                    <div id="modalWarning"
+                        class="hidden mt-2 bg-red-50 text-red-700 text-xs p-2 rounded border border-red-100 flex items-center gap-2">
                         <span>⚠️ Montant inférieur au minimum requis (<span id="modalMinRef"></span>).</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-3">
-                    <button onclick="applyEdit('one')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition border border-gray-300">
+                    <button onclick="applyEdit('one')"
+                        class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition border border-gray-300">
                         Cette période seulement
                     </button>
-                    <button onclick="applyEdit('future')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition shadow-lg flex items-center justify-center gap-2">
+                    <button onclick="applyEdit('future')"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition shadow-lg flex items-center justify-center gap-2">
                         <span>À partir d'ici</span>
-                        <span class="text-[10px] bg-blue-800 px-2 py-0.5 rounded text-blue-100 uppercase tracking-wider">Permanent</span>
+                        <span
+                            class="text-[10px] bg-blue-800 px-2 py-0.5 rounded text-blue-100 uppercase tracking-wider">Permanent</span>
                     </button>
                 </div>
-                
+
                 <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-                     <button onclick="clearOverride()" class="text-xs text-red-500 hover:text-red-700 underline">Rétablir la valeur par défaut</button>
+                    <button onclick="clearOverride()" class="text-xs text-red-500 hover:text-red-700 underline">Rétablir
+                        la valeur par défaut</button>
                 </div>
             </div>
         </div>
@@ -229,18 +275,18 @@
     <script>
         // --- State ---
         let config = {
-            initial: 4758.15,
+            initial: 0,
             interestRate: 0.0,
             termMonths: 24,
             frequency: 12, // 12=Mensuel, 26=Bi, 52=Hebdo
             type: 'degressive', // 'degressive', 'equal', 'loc'
             minPercent: 5.0,
             floor: 150.00,
-            startDate: new Date(2026, 0, 1).toISOString().split('T')[0],
+            startDate: new Date().toISOString().split('T')[0],
             payoffAtEnd: true
         };
 
-        let overrides = {}; 
+        let overrides = {};
         let currentEditingIndex = -1;
 
         // --- Initialization ---
@@ -294,7 +340,7 @@
             config.startDate = e.target.value;
             calculate();
         });
-        
+
         document.getElementById('inputPayoff').addEventListener('change', (e) => {
             config.payoffAtEnd = e.target.checked;
             calculate();
@@ -308,7 +354,7 @@
             const equalEl = document.getElementById('configEqual');
             const headerMin = document.getElementById('headerMinReq');
             const freqLabel = document.getElementById('freqLabel');
-            
+
             // LOC specific
             const wrapperMinPercent = document.getElementById('wrapperMinPercent');
             const wrapperFloor = document.getElementById('wrapperFloor');
@@ -331,7 +377,7 @@
                 equalEl.classList.remove('flex');
                 equalEl.classList.add('hidden');
                 degressiveEl.classList.remove('opacity-0', 'pointer-events-none');
-                
+
                 if (config.type === 'loc') {
                     // Line of Credit Mode
                     headerMin.innerHTML = "Intérêts<br><span class='text-[10px] font-normal opacity-70'>(Min)</span>";
@@ -369,7 +415,7 @@
         // --- Core Calculation Logic ---
         function calculatePMT(yearlyRate, periodsTotal, principal) {
             if (yearlyRate === 0) return principal / periodsTotal;
-            const r = (yearlyRate / 100) / config.frequency; 
+            const r = (yearlyRate / 100) / config.frequency;
             return principal * (r * Math.pow(1 + r, periodsTotal)) / (Math.pow(1 + r, periodsTotal) - 1);
         }
 
@@ -380,9 +426,9 @@
             let totalPaid = 0;
             let totalInterest = 0;
             let totalPrincipal = 0;
-            
+
             let totalPeriods = Math.ceil((config.termMonths / 12) * config.frequency);
-            let currentDateObj = new Date(config.startDate + 'T00:00:00'); 
+            let currentDateObj = new Date(config.startDate + 'T00:00:00');
 
             let fixedPMT = 0;
             if (config.type === 'equal') {
@@ -407,7 +453,7 @@
                     minReq = fixedPMT;
                     payment = (isFuturePlan) ? activeFloor : fixedPMT;
                 } else if (config.type === 'loc') {
-                    minReq = interest; 
+                    minReq = interest;
                     payment = (activeFloor > minReq) ? activeFloor : minReq;
                 } else {
                     minReq = currentBalance * (config.minPercent / 100);
@@ -415,7 +461,7 @@
                 }
 
                 if (overrides[i] && overrides[i].type === 'one') {
-                    payment = Math.max(overrides[i].amount, minReq); 
+                    payment = Math.max(overrides[i].amount, minReq);
                     isCustom = true;
                 }
 
@@ -438,12 +484,12 @@
 
                 let endBalance = currentBalance - principalPaid;
                 if (endBalance < 0.01) endBalance = 0;
-                
+
                 let adjustment = Math.max(0, payment - minReq);
 
                 // Date Formatting
                 let dateStr = currentDateObj.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short', year: '2-digit' });
-                
+
                 if (config.frequency === 12) currentDateObj.setMonth(currentDateObj.getMonth() + 1);
                 else if (config.frequency === 26) currentDateObj.setDate(currentDateObj.getDate() + 14);
                 else if (config.frequency === 52) currentDateObj.setDate(currentDateObj.getDate() + 7);
@@ -470,8 +516,8 @@
                 currentBalance = endBalance;
 
                 if (endBalance === 0 && !isFinalPeriod) {
-                    data[data.length-1].isFinalPeriod = true;
-                    totalPeriods = i; 
+                    data[data.length - 1].isFinalPeriod = true;
+                    totalPeriods = i;
                     break;
                 }
             }
@@ -484,11 +530,11 @@
             const { schedule, totalPaid, totalInterest, totalPrincipal, finalBalance, count } = getScheduleData();
             const tbody = document.getElementById('paymentBody');
             tbody.innerHTML = '';
-            
+
             // Footer Note Update
             const footerNote = document.getElementById('footerNote');
-            footerNote.textContent = config.payoffAtEnd 
-                ? "Le dernier paiement inclut le solde restant (Ballon)." 
+            footerNote.textContent = config.payoffAtEnd
+                ? "Le dernier paiement inclut le solde restant (Ballon)."
                 : "Simulation : La dette n'est pas soldée automatiquement à la fin.";
 
             schedule.forEach(row => {
@@ -504,7 +550,7 @@
                     if (config.payoffAtEnd) {
                         // Payoff Mode Logic
                         let refPayment = (config.type === 'equal') ? row.minReq : Math.max(row.minReq, row.activeFloor);
-                        if (row.payment > (refPayment * 1.5) && row.payment > 10) { 
+                        if (row.payment > (refPayment * 1.5) && row.payment > 10) {
                             tr.className = "bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500";
                             totalClass = "font-mono font-bold text-red-700";
                             badge = `<span class="ml-2 text-[10px] uppercase bg-red-200 text-red-800 px-1.5 py-0.5 rounded">Ballon</span>`;
@@ -516,12 +562,12 @@
                     } else {
                         // Simulation Mode Logic (Not paid off)
                         if (row.endBalance > 0) {
-                             tr.className = "bg-orange-50 hover:bg-orange-100 border-l-4 border-l-orange-500";
-                             badge = `<span class="ml-2 text-[10px] uppercase bg-orange-200 text-orange-800 px-1.5 py-0.5 rounded">À suivre...</span>`;
+                            tr.className = "bg-orange-50 hover:bg-orange-100 border-l-4 border-l-orange-500";
+                            badge = `<span class="ml-2 text-[10px] uppercase bg-orange-200 text-orange-800 px-1.5 py-0.5 rounded">À suivre...</span>`;
                         } else {
-                             // Naturally paid off
-                             tr.className = "bg-green-50 hover:bg-green-100 border-l-4 border-l-green-500";
-                             badge = `<span class="ml-2 text-[10px] uppercase bg-green-200 text-green-800 px-1.5 py-0.5 rounded">Fin</span>`;
+                            // Naturally paid off
+                            tr.className = "bg-green-50 hover:bg-green-100 border-l-4 border-l-green-500";
+                            badge = `<span class="ml-2 text-[10px] uppercase bg-green-200 text-green-800 px-1.5 py-0.5 rounded">Fin</span>`;
                         }
                     }
                 } else if (row.isCustom) {
@@ -529,9 +575,9 @@
                     totalClass = "font-mono font-bold text-yellow-700";
                     badge = `<span class="ml-2 text-[10px] uppercase bg-yellow-200 text-yellow-800 px-1.5 py-0.5 rounded">Manuel</span>`;
                 } else if (row.isFuturePlan) {
-                     tr.className += " bg-blue-50/50";
-                     totalClass = "font-mono font-bold text-blue-700";
-                     badge = `<span class="ml-2 text-[10px] uppercase bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">Plan</span>`;
+                    tr.className += " bg-blue-50/50";
+                    totalClass = "font-mono font-bold text-blue-700";
+                    badge = `<span class="ml-2 text-[10px] uppercase bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">Plan</span>`;
                 }
 
                 if (row.adjustment > 0.01) {
@@ -571,13 +617,13 @@
             document.getElementById('kpiCount').textContent = count;
             document.getElementById('kpiInterest').textContent = fmt(totalInterest);
             document.getElementById('kpiTotalPaid').textContent = fmt(totalPaid);
-            
+
             // Final Balance Logic for Display
             // If Paid off (endBalance is 0), show 0.00
             // If NOT paid off, show balance.
             let displayBalance = finalBalance;
             let balanceEl = document.getElementById('kpiFinalBalance');
-            
+
             balanceEl.textContent = fmt(displayBalance);
             if (displayBalance > 0.01) {
                 balanceEl.className = "text-2xl font-bold text-red-600 mt-1";
@@ -667,7 +713,7 @@
 
         // --- Helpers & Modals ---
         function fmt(n) { return new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format(n); }
-        
+
         const modal = document.getElementById('editModal');
         const modalAmount = document.getElementById('modalAmount');
         const modalWarning = document.getElementById('modalWarning');
@@ -710,9 +756,10 @@
             closeModal();
             calculate();
         }
-        
+
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
     </script>
 </body>
+
 </html>
