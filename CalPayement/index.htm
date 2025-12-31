@@ -291,10 +291,33 @@
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
+            loadState();
             syncInputsToConfig();
             updateUIForType();
             calculate();
         });
+
+        function saveState() {
+            localStorage.setItem('cal_payment_config', JSON.stringify(config));
+            localStorage.setItem('cal_payment_overrides', JSON.stringify(overrides));
+        }
+
+        function loadState() {
+            const savedConfig = localStorage.getItem('cal_payment_config');
+            const savedOverrides = localStorage.getItem('cal_payment_overrides');
+
+            if (savedConfig) {
+                try {
+                    const parsed = JSON.parse(savedConfig);
+                    config = { ...config, ...parsed };
+                } catch (e) { console.error('Error loading config', e); }
+            }
+            if (savedOverrides) {
+                try {
+                    overrides = JSON.parse(savedOverrides);
+                } catch (e) { console.error('Error loading overrides', e); }
+            }
+        }
 
         function syncInputsToConfig() {
             document.getElementById('inputInitial').value = config.initial;
@@ -320,6 +343,7 @@
         for (const [id, key] of Object.entries(inputs)) {
             document.getElementById(id).addEventListener('input', (e) => {
                 config[key] = parseFloat(e.target.value) || 0;
+                saveState();
                 calculate();
             });
         }
@@ -327,22 +351,26 @@
         document.getElementById('inputFrequency').addEventListener('change', (e) => {
             config.frequency = parseInt(e.target.value);
             updateUIForType();
+            saveState();
             calculate();
         });
 
         document.getElementById('inputType').addEventListener('change', (e) => {
             config.type = e.target.value;
             updateUIForType();
+            saveState();
             calculate();
         });
 
         document.getElementById('inputDate').addEventListener('change', (e) => {
             config.startDate = e.target.value;
+            saveState();
             calculate();
         });
 
         document.getElementById('inputPayoff').addEventListener('change', (e) => {
             config.payoffAtEnd = e.target.checked;
+            saveState();
             calculate();
         });
 
@@ -409,6 +437,7 @@
             config.payoffAtEnd = true;
             syncInputsToConfig();
             updateUIForType();
+            saveState();
             calculate();
         }
 
@@ -748,12 +777,14 @@
             if (isNaN(val) || val < 0) return;
             overrides[currentEditingIndex] = { type: type, amount: val };
             closeModal();
+            saveState();
             calculate();
         }
 
         function clearOverride() {
             if (overrides[currentEditingIndex]) delete overrides[currentEditingIndex];
             closeModal();
+            saveState();
             calculate();
         }
 
