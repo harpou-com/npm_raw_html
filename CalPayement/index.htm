@@ -137,91 +137,103 @@
                             </div>
                             <div id="wrapperFloor" class="col-span-1">
                                 <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1"
-                                    id="labelFloor">Plancher ($)</label>
+                                    id="labelFloor">Paiement de Base / Plancher ($)</label>
                                 <input type="number" id="inputFloor" value="0" step="5"
                                     class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Config pour Égal (Overlay) -->
-                    <div id="configEqual"
-                        class="absolute inset-0 hidden items-center justify-center p-2 bg-slate-800 rounded">
-                        <div class="w-full text-center">
-                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement
-                                Calculé</label>
-                            <div class="text-xl text-blue-300 font-mono font-bold" id="displayFixedPMT">
-                                --
+                        <!-- Global Extra -->
+                        <div class="mt-2" id="wrapperGlobalExtra">
+                            <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Extra
+                                Global ($)</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+</span>
+                                <input type="number" id="inputGlobalExtra" value="0" step="10"
+                                    class="w-full bg-slate-900 border border-slate-500 rounded px-3 py-2 pl-8 text-white font-mono text-sm focus:outline-none focus:border-blue-400">
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Col 5: Reset -->
-                <div class="lg:col-span-1 flex items-end">
-                    <button onclick="resetData()"
-                        class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
-                        Réinitialiser
-                    </button>
+                <!-- Config pour Égal (Overlay) -->
+                <div id="configEqual"
+                    class="absolute inset-0 hidden items-center justify-center p-2 bg-slate-800 rounded">
+                    <div class="w-full text-center">
+                        <label class="block text-[10px] uppercase font-bold tracking-wider opacity-60 mb-1">Paiement
+                            Calculé</label>
+                        <div class="text-xl text-blue-300 font-mono font-bold" id="displayFixedPMT">
+                            --
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1" id="freqLabel">par mois</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Summary KPI -->
-        <div
-            class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
-            <div class="p-4 text-center">
-                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Nb. Paiements</p>
-                <p class="text-xl font-bold text-gray-800 mt-1" id="kpiCount">--</p>
-            </div>
-            <div class="p-4 text-center">
-                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Intérêts Payés</p>
-                <p class="text-xl font-bold text-orange-600 mt-1" id="kpiInterest">--</p>
-            </div>
-            <div class="p-4 text-center">
-                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Déboursé</p>
-                <p class="text-xl font-bold text-blue-800 mt-1" id="kpiTotalPaid">--</p>
-            </div>
-            <div class="p-4 text-center bg-white">
-                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Solde Final</p>
-                <p class="text-2xl font-bold text-gray-800 mt-1" id="kpiFinalBalance">--</p>
+            <!-- Col 5: Reset -->
+            <div class="lg:col-span-1 flex items-end">
+                <button onclick="resetData()"
+                    class="w-full text-xs bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-slate-300 transition h-full flex items-center justify-center">
+                    Réinitialiser
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Main Table -->
-        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
-            <table class="w-full text-sm text-left relative">
-                <thead
-                    class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-                    <tr>
-                        <th class="px-4 py-3 w-12">#</th>
-                        <th class="px-4 py-3 w-32">Date</th>
-                        <th class="px-4 py-3 text-right">Solde Début</th>
-                        <th class="px-4 py-3 text-right text-orange-600 w-24">Intérêts</th>
-                        <th class="px-4 py-3 text-right bg-gray-50">
-                            <span id="headerMinReq">Min. Req.</span>
-                        </th>
-                        <th class="px-4 py-3 text-right bg-blue-50/50 text-blue-900 border-l border-r border-blue-100">
-                            Ajust.
-                        </th>
-                        <th class="px-4 py-3 text-right w-32 font-bold">
-                            Total Payé
-                        </th>
-                        <th class="px-4 py-3 text-right">Solde Fin</th>
-                        <th class="px-4 py-3 w-10"></th>
-                    </tr>
-                </thead>
-                <tbody id="paymentBody" class="divide-y divide-gray-100">
-                    <!-- Rows generated by JS -->
-                </tbody>
-            </table>
+    <!-- Summary KPI -->
+    <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x border-b border-gray-200 bg-gray-50">
+        <div class="p-4 text-center">
+            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Nb. Paiements</p>
+            <p class="text-xl font-bold text-gray-800 mt-1" id="kpiCount">--</p>
         </div>
+        <div class="p-4 text-center">
+            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Intérêts Payés</p>
+            <p class="text-xl font-bold text-orange-600 mt-1" id="kpiInterest">--</p>
+        </div>
+        <div class="p-4 text-center">
+            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Déboursé</p>
+            <p class="text-xl font-bold text-blue-800 mt-1" id="kpiTotalPaid">--</p>
+        </div>
+        <div class="p-4 text-center bg-white">
+            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Solde Final</p>
+            <p class="text-2xl font-bold text-gray-800 mt-1" id="kpiFinalBalance">--</p>
+        </div>
+    </div>
 
-        <div class="p-4 bg-gray-50 border-t text-xs text-gray-500 flex justify-between items-center">
-            <span>* Intérêts calculés par période sur le solde restant.</span>
-            <span id="footerNote">--</span>
-        </div>
+    <!-- Main Table -->
+    <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+        <table class="w-full text-sm text-left relative">
+            <thead
+                class="text-xs text-gray-500 uppercase bg-gray-100 border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+                <tr>
+                    <th class="px-4 py-3 w-12">#</th>
+                    <th class="px-4 py-3 w-32">Date</th>
+                    <th class="px-4 py-3 text-right">Solde Début</th>
+                    <th class="px-4 py-3 text-right text-orange-600 w-24">Intérêts</th>
+                    <th class="px-4 py-3 text-right bg-gray-50">
+                        <span id="headerMinReq">Min. Req.</span>
+                    </th>
+                    <th class="px-4 py-3 text-right bg-blue-50/50 text-blue-900 border-l border-r border-blue-100">
+                        Ajust.
+                    </th>
+                    <th class="px-4 py-3 text-right w-32 font-bold">
+                        Total Payé
+                    </th>
+                    <th class="px-4 py-3 text-right">Solde Fin</th>
+                    <th class="px-4 py-3 w-10"></th>
+                </tr>
+            </thead>
+            <tbody id="paymentBody" class="divide-y divide-gray-100">
+                <!-- Rows generated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-4 bg-gray-50 border-t text-xs text-gray-500 flex justify-between items-center">
+        <span>* Intérêts calculés par période sur le solde restant.</span>
+        <span id="footerNote">--</span>
+    </div>
 
     </div>
 
@@ -303,7 +315,8 @@
             minPercent: 0,
             floor: 0,
             startDate: new Date().toISOString().split('T')[0],
-            payoffAtEnd: false
+            payoffAtEnd: false,
+            globalExtra: 0
         };
 
         let overrides = {};
@@ -350,6 +363,8 @@
             document.getElementById('inputFloor').value = config.floor;
             document.getElementById('inputDate').value = config.startDate;
             document.getElementById('inputPayoff').checked = config.payoffAtEnd;
+            if (document.getElementById('inputGlobalExtra'))
+                document.getElementById('inputGlobalExtra').value = config.globalExtra || 0;
         }
 
         // --- Event Listeners ---
@@ -391,6 +406,12 @@
 
         document.getElementById('inputPayoff').addEventListener('change', (e) => {
             config.payoffAtEnd = e.target.checked;
+            saveState();
+            calculate();
+        });
+
+        document.getElementById('inputGlobalExtra').addEventListener('input', (e) => {
+            config.globalExtra = parseFloat(e.target.value) || 0;
             saveState();
             calculate();
         });
@@ -456,6 +477,8 @@
             config.type = 'degressive';
             config.startDate = new Date().toISOString().split('T')[0];
             config.payoffAtEnd = false;
+            config.globalExtra = 0;
+
             syncInputsToConfig();
             updateUIForType();
             saveState();
@@ -482,53 +505,95 @@
             let currentDateObj = new Date(config.startDate + 'T00:00:00');
 
             let fixedPMT = 0;
+            // Calculate Amortized PMT if needed (Equal Mode)
             if (config.type === 'equal') {
                 fixedPMT = calculatePMT(config.interestRate, totalPeriods, config.initial);
                 document.getElementById('displayFixedPMT').textContent = fmt(fixedPMT);
             }
 
             for (let i = 1; i <= totalPeriods; i++) {
+                // Check for Future Override
                 if (overrides[i] && overrides[i].type === 'future') {
-                    activeFloor = overrides[i].amount;
+                    if (overrides[i].mode === 'extra') {
+                        activeExtra = overrides[i].amount;
+                    } else {
+                        // Total Mode Override for Future
+                        activeFloor = overrides[i].amount;
+                        activeExtra = 0; // Reset extra
+                    }
                 }
 
                 let interest = currentBalance * ((config.interestRate / 100) / config.frequency);
                 let minReq = 0;
+                let basePayment = 0;
                 let payment = 0;
                 let isCustom = false;
-                let isFinalPeriod = (i === totalPeriods);
-                let isFuturePlan = (overrides[i] && overrides[i].type === 'future');
 
-                // Base payment logic
+                // Effective Extra priority: 
+                // Priority: Manual Extra > Global Extra.
+                // manual includes "future activeExtra"
+
+                let effectiveExtra = (config.globalExtra || 0);
+                let isExtraManual = false;
+
+                if (activeExtra > 0) {
+                    effectiveExtra = activeExtra;
+                    isExtraManual = true;
+                }
+
+                let isFinalPeriod = (i === totalPeriods);
+                let isFuturePlan = (activeExtra > 0 || (overrides[i] && overrides[i].type === 'future'));
+                if (activeFloor !== config.floor) isFuturePlan = true;
+
+                // --- 1. Calculate Base Payment ---
                 if (config.type === 'equal') {
                     minReq = fixedPMT;
-                    payment = (isFuturePlan) ? activeFloor : fixedPMT;
+                    // For Equal, Base takes Floor if set > 0
+                    if (config.floor > 0 && activeFloor === config.floor) {
+                        basePayment = config.floor;
+                    } else if (activeFloor !== config.floor) {
+                        basePayment = activeFloor; // Future Plan Override
+                    } else {
+                        basePayment = fixedPMT;
+                    }
                 } else if (config.type === 'loc') {
                     minReq = interest;
-                    payment = (activeFloor > minReq) ? activeFloor : minReq;
+                    basePayment = Math.max(minReq, activeFloor);
                 } else {
+                    // Degressive
                     minReq = currentBalance * (config.minPercent / 100);
-                    payment = (minReq > activeFloor) ? minReq : activeFloor;
+                    basePayment = Math.max(minReq, activeFloor);
                 }
 
+                // --- 2. Apply Extra (Manual or Global) ---
+                payment = basePayment + effectiveExtra;
+
+
+                // --- 3. Handle Single Override (Priority High) ---
                 if (overrides[i] && overrides[i].type === 'one') {
-                    payment = Math.max(overrides[i].amount, minReq);
-                    isCustom = true;
+                    if (overrides[i].mode === 'extra') {
+                        // Single Extra replaces Global/Future Extra for this month
+                        effectiveExtra = overrides[i].amount;
+                        payment = basePayment + effectiveExtra;
+                        isCustom = true;
+                        isExtraManual = true;
+                    } else {
+                        // Single Total replaces EVERYTHING
+                        payment = Math.max(overrides[i].amount, minReq);
+                        isCustom = true;
+                        effectiveExtra = 0;
+                    }
                 }
 
-                // Final Period Logic (Controlled by checkbox)
+                // Final Period Logic
                 if (isFinalPeriod && config.payoffAtEnd) {
                     let payoffAmount = currentBalance + interest;
                     payment = payoffAmount;
                 }
 
-                // Cap Payment if we are paying off too much (even if not final)
-                // BUT only if we are actually intending to reduce principal to zero
-                // (Always true unless LOC logic wants to float? No, payment should never exceed debt+interest)
+                // Cap Payment
                 let maxNeeded = currentBalance + interest;
-                if (payment > maxNeeded) {
-                    payment = maxNeeded;
-                }
+                if (payment > maxNeeded) payment = maxNeeded;
 
                 let principalPaid = payment - interest;
                 if (principalPaid < 0) principalPaid = 0;
@@ -540,10 +605,15 @@
 
                 // Date Formatting
                 let dateStr = currentDateObj.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short', year: '2-digit' });
-
                 if (config.frequency === 12) currentDateObj.setMonth(currentDateObj.getMonth() + 1);
                 else if (config.frequency === 26) currentDateObj.setDate(currentDateObj.getDate() + 14);
                 else if (config.frequency === 52) currentDateObj.setDate(currentDateObj.getDate() + 7);
+
+                // Badge Logic Helper Stats
+                let isRowExtra = false;
+                if ((effectiveExtra > 0 && !isCustom) || (isCustom && overrides[i].mode === 'extra')) {
+                    isRowExtra = true;
+                }
 
                 data.push({
                     index: i,
@@ -559,8 +629,10 @@
                     isFuturePlan: isFuturePlan,
                     isFinalPeriod: isFinalPeriod,
                     activeFloor: activeFloor,
-                    activeExtra: activeExtra,
-                    isExtra: (activeExtra > 0 || (isCustom && overrides[i].mode === 'extra'))
+                    activeExtra: effectiveExtra,
+                    isExtra: isRowExtra,
+                    extraAmount: effectiveExtra,
+                    isGlobalExtra: (effectiveExtra === config.globalExtra && config.globalExtra > 0 && !isExtraManual)
                 });
 
                 totalPaid += payment;
