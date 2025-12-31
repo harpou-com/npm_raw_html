@@ -1,3 +1,23 @@
+# Plan Financier
+
+## Configuration
+- **Montant Initial**: 30 000,00 $
+- **Date Début**: 2026-01-28
+- **Fréquence**: Mensuel
+- **Intérêt**: 7.5%
+- **Durée**: 60 mois
+- **Type**: loc
+- **Paiement de Base / Plancher**: 0,00 $
+- **Extra Global**: 498,33 $
+- **Solder à la fin**: Non
+
+## Résumé
+- **Nombre de Paiements**: 60
+- **Total Intérêts**: 5 737,19 $
+- **Total Payé**: 35 637,19 $
+- **Solde Final**: 100,00 $
+
+## Détails
 | # | Date | Solde Début | Intérêts | Min Requis | Ajust. | Total Payé | Solde Fin |
 |---:|:---|---:|---:|---:|---:|---:|---:|
 | 1 | 28 janv. 26 | 30 000,00 $ | 187,50 $ | 187,50 $ | 498,33 $ | **685,83 $** | 29 501,67 $ |
