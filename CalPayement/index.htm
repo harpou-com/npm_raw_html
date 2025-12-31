@@ -819,8 +819,33 @@
         }
 
         function exportToMD() {
-            const { schedule } = getScheduleData();
-            let md = "| # | Date | Solde Début | Intérêts | Min Requis | Ajust. | Total Payé | Solde Fin |\n";
+            const { schedule, totalPaid, totalInterest, totalPrincipal, finalBalance, count } = getScheduleData();
+
+            let freqStr = "Mensuel";
+            if (config.frequency === 26) freqStr = "Aux 2 semaines";
+            if (config.frequency === 52) freqStr = "Hebdomadaire";
+
+            let md = `# Plan Financier\n\n`;
+
+            md += `## Configuration\n`;
+            md += `- **Montant Initial**: ${fmt(config.initial)}\n`;
+            md += `- **Date Début**: ${config.startDate}\n`;
+            md += `- **Fréquence**: ${freqStr}\n`;
+            md += `- **Intérêt**: ${config.interestRate}%\n`;
+            md += `- **Durée**: ${config.termMonths} mois\n`;
+            md += `- **Type**: ${config.type}\n`;
+            md += `- **Paiement de Base / Plancher**: ${fmt(config.floor)}\n`;
+            md += `- **Extra Global**: ${fmt(config.globalExtra || 0)}\n`;
+            md += `- **Solder à la fin**: ${config.payoffAtEnd ? "Oui" : "Non"}\n\n`;
+
+            md += `## Résumé\n`;
+            md += `- **Nombre de Paiements**: ${count}\n`;
+            md += `- **Total Intérêts**: ${fmt(totalInterest)}\n`;
+            md += `- **Total Payé**: ${fmt(totalPaid)}\n`;
+            md += `- **Solde Final**: ${fmt(finalBalance)}\n\n`;
+
+            md += `## Détails\n`;
+            md += "| # | Date | Solde Début | Intérêts | Min Requis | Ajust. | Total Payé | Solde Fin |\n";
             md += "|---:|:---|---:|---:|---:|---:|---:|---:|\n";
             schedule.forEach(row => {
                 md += `| ${row.index} | ${row.dateStr} | ${fmt(row.startBalance)} | ${fmt(row.interest)} | ${fmt(row.minReq)} | ${fmt(row.adjustment)} | **${fmt(row.payment)}** | ${fmt(row.endBalance)} |\n`;
@@ -837,12 +862,41 @@
         async function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const { schedule } = getScheduleData();
+            const { schedule, totalPaid, totalInterest, finalBalance, count } = getScheduleData();
 
-            doc.setFontSize(16);
-            doc.text("Plan Financier", 14, 20);
+            let freqStr = "Mensuel";
+            if (config.frequency === 26) freqStr = "Aux 2 semaines";
+            if (config.frequency === 52) freqStr = "Hebdomadaire";
+
+            // Title
+            doc.setFontSize(18);
+            doc.text("Plan Financier", 14, 15);
+
+            // Configuration
             doc.setFontSize(10);
-            doc.text(`Initial: ${fmt(config.initial)} | Taux: ${config.interestRate}%`, 14, 30);
+            doc.setTextColor(50);
+            let y = 25;
+            doc.text(`Configuration:`, 14, y); y += 6;
+            doc.text(`Montant: ${fmt(config.initial)}  |  Taux: ${config.interestRate}%  |  Durée: ${config.termMonths} mois`, 14, y); y += 6;
+            doc.text(`Début: ${config.startDate}  |  Fréquence: ${freqStr}  |  Type: ${config.type}`, 14, y); y += 6;
+            doc.text(`Base / Plancher: ${fmt(config.floor)}  |  Extra Global: ${fmt(config.globalExtra || 0)}`, 14, y); y += 10;
+
+            // Summary
+            doc.setFontSize(11);
+            doc.setTextColor(0);
+            doc.text(`Résumé:`, 14, y); y += 6;
+            doc.setFontSize(10);
+            doc.text(`Total Payé: ${fmt(totalPaid)}  |  Intérêts: ${fmt(totalInterest)}  |  Nb. Paiements: ${count}`, 14, y);
+            y += 6;
+            if (finalBalance > 0.01) {
+                doc.setTextColor(200, 0, 0);
+                doc.text(`Attention: Solde Final Restant: ${fmt(finalBalance)}`, 14, y);
+            } else {
+                doc.setTextColor(0, 150, 0);
+                doc.text(`Dette soldée entièrement.`, 14, y);
+            }
+            doc.setTextColor(0);
+            y += 10;
 
             const tableBody = schedule.map(row => [
                 row.index,
@@ -856,7 +910,7 @@
             ]);
 
             doc.autoTable({
-                startY: 35,
+                startY: y,
                 head: [['#', 'Date', 'Solde Deb.', 'Int.', 'Min Req.', 'Ajust.', 'Total', 'Fin']],
                 body: tableBody,
                 theme: 'striped',
