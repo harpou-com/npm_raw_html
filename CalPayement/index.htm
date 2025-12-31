@@ -837,16 +837,15 @@
             md += `| **Solder à la fin** | ${config.payoffAtEnd ? "Oui" : "Non"} | | |\n\n`;
 
             md += `### Résumé\n`;
-            md += `| KPI | Valeur | KPI | Valeur |\n`;
-            md += `| :--- | :--- | :--- | :--- |\n`;
-            md += `| **Total Payé** | ${fmt(totalPaid)} | **Total Intérêts** | ${fmt(totalInterest)} |\n`;
-            md += `| **Nb. Paiements** | ${count} | **Solde Final** | ${fmt(finalBalance)} |\n\n`;
+            md += `| Total Payé | Total Intérêts | Nb. Paiements | Solde Final |\n`;
+            md += `| :---: | :---: | :---: | :---: |\n`;
 
-            if (finalBalance > 0.01) {
-                md += `> ⚠️ **Attention**: Il reste un solde final de ${fmt(finalBalance)}\n\n`;
-            } else {
-                md += `> ✅ **Parfait**: La dette est entièrement soldée.\n\n`;
-            }
+            const colorPaid = '#2563eb'; // Blue-600
+            const colorInt = '#ea580c'; // Orange-600
+            const colorFinal = (finalBalance > 0.01) ? '#dc2626' : '#16a34a'; // Red or Green
+            const finalMsg = (finalBalance > 0.01) ? `Restant: ${fmt(finalBalance)}` : "Dette Soldée";
+
+            md += `| <span style="color:${colorPaid}">**${fmt(totalPaid)}**</span> | <span style="color:${colorInt}">**${fmt(totalInterest)}**</span> | ${count} | <span style="color:${colorFinal}">**${finalMsg}**</span> |\n\n`;
 
             md += `### Détails de l'échéancier\n`;
             md += "| # | Date | Solde Début | Intérêts | Min Requis | Ajust. | Total Payé | Solde Fin |\n";
@@ -925,7 +924,9 @@
                 styles: { fontSize: 10, fontStyle: 'bold', halign: 'center' },
                 headStyles: { fillColor: [30, 41, 59] },
                 columnStyles: {
-                    3: { textColor: finalColor }
+                    0: { textColor: [37, 99, 235] }, // Blue-600 (Total Paid)
+                    1: { textColor: [234, 88, 12] }, // Orange-600 (Total Interest)
+                    3: { textColor: finalColor }      // Dynamic Red/Green (Final Balance)
                 }
             });
 
